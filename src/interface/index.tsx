@@ -1,21 +1,57 @@
 import axios from 'axios'
 import type { RegisterUser } from '../pages/Register'
 import type { UpdatePassword } from '../pages/UpdatePassword'
+import type { UserInfo } from '../pages/UpdateInfo'
+import { message } from 'antd'
 
-const userServiceInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: 'http://localhost:3007/',
   timeout: 3000,
 })
 
+axiosInstance.interceptors.request.use(function (config) {
+  const accessToken = localStorage.getItem('token')
+
+  if (accessToken) {
+    config.headers.authorization = 'Bearer ' + accessToken
+  }
+  return config
+})
+
+axiosInstance.interceptors.response.use(
+  response => {
+    const newToken = response.headers['token']
+    if (newToken) {
+      localStorage.setItem('token', newToken)
+    }
+    return response
+  },
+  async error => {
+    if (!error.response) {
+      return Promise.reject(error)
+    }
+    const { data } = error.response
+    if (data.statusCode === 401) {
+      message.error(data.message)
+
+      setTimeout(() => {
+        window.location.href = '/login'
+      }, 1500)
+    } else {
+      return Promise.reject(error)
+    }
+  }
+)
+
 export async function login(username: string, password: string) {
-  return await userServiceInstance.post('/user/login', {
+  return await axiosInstance.post('/user/login', {
     username,
     password,
   })
 }
 
 export async function registerCaptcha(email: string) {
-  return await userServiceInstance.get('/user/register-captcha', {
+  return await axiosInstance.get('/user/register-captcha', {
     params: {
       address: email,
     },
@@ -23,11 +59,11 @@ export async function registerCaptcha(email: string) {
 }
 
 export async function register(registerUser: RegisterUser) {
-  return await userServiceInstance.post('/user/register', registerUser)
+  return await axiosInstance.post('/user/register', registerUser)
 }
 
 export async function updatePasswordCaptcha(email: string) {
-  return await userServiceInstance.get('/user/update_password/captcha', {
+  return await axiosInstance.get('/user/update_password/captcha', {
     params: {
       address: email,
     },
@@ -35,5 +71,17 @@ export async function updatePasswordCaptcha(email: string) {
 }
 
 export async function updatePassword(data: UpdatePassword) {
-  return await userServiceInstance.post('/user/update_password', data)
+  return await axiosInstance.post('/user/update_password', data)
+}
+
+export async function getUserInfo() {
+  return await axiosInstance.get('/user/info')
+}
+
+export async function updateInfo(data: UserInfo) {
+  return await axiosInstance.post('/user/update', data)
+}
+
+export async function updateUserInfoCaptcha() {
+  return await axiosInstance.get('/user/update/captcha')
 }
