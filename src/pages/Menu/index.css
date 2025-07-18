@@ -5,3 +5,7 @@
 #menu-container .menu-area {
   width: 200px;
 }
+
+#menu-container .content-area {
+  min-width: 800px;
+}
