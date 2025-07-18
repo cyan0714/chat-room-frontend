@@ -5,6 +5,7 @@ import './index.scss'
 import { chatHistoryList, chatroomList } from '../../interface'
 import type { UserInfo } from '../UpdateInfo'
 import TextArea from 'antd/es/input/TextArea'
+import { useLocation } from 'react-router-dom'
 
 interface JoinRoomPayload {
   chatroomId: number
@@ -156,6 +157,9 @@ export function Chat() {
             }
           })
         )
+        setTimeout(() => {
+          document.getElementById('bottom-bar')?.scrollIntoView({ block: 'end' })
+        }, 300)
       }
     } catch (e: any) {
       message.error(e.response?.data?.message || '系统繁忙，请稍后再试')
@@ -163,13 +167,22 @@ export function Chat() {
   }
   const [inputText, setInputText] = useState('')
 
+  const location = useLocation()
+
+  useEffect(() => {
+    const chatroomId = location.state?.chatroomId
+    if (!chatroomId) return
+    setChatroomId(chatroomId)
+    queryChatHistoryList(chatroomId)
+  }, [location.state?.chatroomId])
+
   return (
     <div id='chat-container'>
       <div className='chat-room-list'>
         {roomList?.map(item => {
           return (
             <div
-              className='chat-room-item'
+              className={`chat-room-item ${item.id === roomId ? 'selected' : ''}`}
               key={item.id}
               data-id={item.id}
               onClick={() => {
