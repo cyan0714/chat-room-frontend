@@ -5,6 +5,12 @@ import { Login } from './pages/Login'
 import { UpdatePassword } from './pages/UpdatePassword'
 import { Index } from './pages/Index'
 import { UpdateInfo } from './pages/UpdateInfo'
+import { Menu } from './pages/Menu'
+import { Friendship } from './pages/FriendShip'
+import { Group } from './pages/Group'
+import { Chat } from './pages/Chat'
+import { Collection } from './pages/Collection'
+import { Notification } from './pages/Notification'
 
 const routes = [
   {
@@ -12,12 +18,30 @@ const routes = [
     element: <Index></Index>,
     children: [
       {
-        path: 'aaa',
-        element: <div>aaa</div>,
-      },
-      {
-        path: 'bbb',
-        element: <div>bbb</div>,
+        path: '/',
+        element: <Menu />,
+        children: [
+          {
+            path: '/',
+            element: <Friendship />,
+          },
+          {
+            path: '/group',
+            element: <Group />,
+          },
+          {
+            path: 'chat',
+            element: <Chat />,
+          },
+          {
+            path: 'collection',
+            element: <Collection />,
+          },
+          {
+            path: 'notification',
+            element: <Notification />,
+          },
+        ],
       },
       {
         path: 'update_info',
@@ -39,7 +63,7 @@ const routes = [
     element: <UpdatePassword />,
   },
 ]
-const router = createBrowserRouter(routes)
+export const router = createBrowserRouter(routes)
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
