@@ -11,6 +11,7 @@ import { Group } from './pages/Group'
 import { Chat } from './pages/Chat'
 import { Collection } from './pages/Collection'
 import { Notification } from './pages/Notification'
+import './index.css'
 
 const routes = [
   {
