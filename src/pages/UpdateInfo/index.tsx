@@ -27,6 +27,15 @@ export function UpdateInfo() {
 
     if (res.status === 201 || res.status === 200) {
       message.success('用户信息更新成功')
+      const userInfo = localStorage.getItem('userInfo')
+      if (userInfo) {
+        const info = JSON.parse(userInfo)
+        info.headPic = values.headPic
+        info.nickName = values.nickName
+
+        localStorage.setItem('userInfo', JSON.stringify(info))
+        window.dispatchEvent(new Event('userInfoUpdated'))
+      }
     } else {
       message.error('系统繁忙，请稍后再试')
     }
@@ -58,7 +67,10 @@ export function UpdateInfo() {
   return (
     <div id='updateInfo-container'>
       <Form form={form} {...layout1} onFinish={onFinish} colon={false} autoComplete='off'>
-        <Form.Item label='头像' name='headPic' rules={[{ required: false, message: '请输入头像!' }]}>
+        <Form.Item
+          label='头像'
+          name='headPic'
+          rules={[{ required: false, message: '请输入头像!' }]}>
           <HeadPicUpload />
         </Form.Item>
 

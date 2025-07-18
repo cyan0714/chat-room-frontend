@@ -1,6 +1,8 @@
 import { InboxOutlined } from '@ant-design/icons'
 import { message } from 'antd'
 import Dragger, { type DraggerProps } from 'antd/es/upload/Dragger'
+import axios from 'axios'
+import { presignedUrl } from '../../interface'
 
 interface HeadPicUploadProps {
   value?: string
@@ -11,11 +13,22 @@ let onChange: (value: string) => void
 
 const props: DraggerProps = {
   name: 'file',
-  action: 'http://localhost:3007/user/upload',
+  action: async file => {
+    const res = await presignedUrl(file.name)
+    return res.data
+  },
+  async customRequest(options) {
+    const { onSuccess, file, action } = options
+    const res = await axios.put(action, file)
+
+    onSuccess!(res.data)
+  },
+
+  // action: 'http://localhost:3007/user/upload',
   onChange(info) {
     const { status } = info.file
     if (status === 'done') {
-      onChange(info.file.response.data)
+      onChange('http://localhost:9000/chat-room/' + info.file.name)
       message.success(`${info.file.name} 文件上传成功`)
     } else if (status === 'error') {
       message.error(`${info.file.name} 文件上传失败`)
@@ -37,7 +50,7 @@ export function HeadPicUpload(props: HeadPicUploadProps) {
 
   return props?.value ? (
     <div>
-      <img src={'http://localhost:3007/' + props.value} alt='头像' width='100' height='100' />
+      <img src={props.value} alt='头像' width='100' height='100' />
       {dragger}
     </div>
   ) : (
