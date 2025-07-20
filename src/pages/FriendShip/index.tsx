@@ -53,6 +53,14 @@ export function Friendship() {
   const columns: ColumnsType<FriendshipSearchResult> = useMemo(
     () => [
       {
+        title: 'ID',
+        dataIndex: 'id',
+      },
+      {
+        title: '用户名',
+        dataIndex: 'username',
+      },
+      {
         title: '昵称',
         dataIndex: 'nickName',
       },
@@ -80,6 +88,17 @@ export function Friendship() {
               }}>
               聊天
             </a>
+            {/* <a
+              href=''
+              onClick={() => {
+                navigate('/chat', {
+                  state: {
+                    chatroomId: record.id,
+                  },
+                })
+              }}>
+              聊天
+            </a> */}
           </div>
         ),
       },

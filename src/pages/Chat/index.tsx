@@ -83,6 +83,7 @@ export function Chat() {
 
       socket.on('message', (reply: Reply) => {
         if (reply.type === 'sendMessage') {
+          console.log('chatHistory', chatHistory)
           setChatHistory(chatHistory => {
             return chatHistory ? [...chatHistory, reply.message] : [reply.message]
           })
@@ -199,6 +200,7 @@ export function Chat() {
           return (
             <div
               className={`message-item ${item.senderId === userInfo.id ? 'from-me' : ''}`}
+              key={item.id}
               data-id={item.id}>
               <div className='message-sender'>
                 <img src={item.sender.headPic} />
