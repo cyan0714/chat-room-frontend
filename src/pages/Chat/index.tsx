@@ -2,7 +2,7 @@ import { Button, message, Popover } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
 import './index.scss'
-import { chatHistoryList, chatroomList } from '../../interface'
+import { chatHistoryList, chatroomList, favoriteAdd } from '../../interface'
 import type { UserInfo } from '../UpdateInfo'
 import TextArea from 'antd/es/input/TextArea'
 import { useLocation } from 'react-router-dom'
@@ -189,6 +189,18 @@ export function Chat() {
 
   const [uploadType, setUploadType] = useState<'image' | 'file'>('image')
 
+  async function addToFavorite(chatHistoryId: number) {
+    try {
+      const res = await favoriteAdd(chatHistoryId)
+
+      if (res.status === 201 || res.status === 200) {
+        message.success('收藏成功')
+      }
+    } catch (e: any) {
+      message.error(e.response?.data?.message || '系统繁忙，请稍后再试')
+    }
+  }
+
   return (
     <div id='chat-container'>
       <div className='chat-room-list'>
@@ -213,7 +225,10 @@ export function Chat() {
             <div
               className={`message-item ${item.senderId === userInfo.id ? 'from-me' : ''}`}
               key={item.id}
-              data-id={item.id}>
+              data-id={item.id}
+              onDoubleClick={() => {
+                addToFavorite(item.id)
+              }}>
               <div className='message-sender'>
                 <img src={item.sender.headPic} />
                 <span className='sender-nickname'>{item.sender.nickName}</span>
