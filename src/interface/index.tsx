@@ -6,8 +6,11 @@ import { message } from 'antd'
 import type { AddFriend } from '../pages/FriendShip/AddFriendModal'
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3007/',
-  timeout: 3000,
+  // 测试环境
+  baseURL: 'http://localhost:3007',
+  // 生产环境(记得给 nginx 配置 /api 的转发，同时 loacalhost 改成你云服务器的公网 ip 地址)
+  // baseURL: 'http://localhost/api',
+  timeout: 60000,
 })
 
 axiosInstance.interceptors.request.use(function (config) {

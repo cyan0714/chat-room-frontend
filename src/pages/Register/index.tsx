@@ -69,6 +69,13 @@ export function Register() {
         </Form.Item>
 
         <Form.Item
+          label='昵称'
+          name='nickName'
+          rules={[{ required: true, message: '请输入昵称!' }]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item
           label='密码'
           name='password'
           rules={[{ required: true, message: '请输入密码!' }]}>
