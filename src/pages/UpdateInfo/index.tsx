@@ -42,9 +42,9 @@ export function UpdateInfo() {
   }, [])
 
   const sendCaptcha = useCallback(async function () {
-    const res = await updateUserInfoCaptcha()
+    const res = await updateUserInfoCaptcha(form.getFieldValue('email'))
     if (res.status === 201 || res.status === 200) {
-      message.success(res.data.data)
+      message.success(res.data)
     } else {
       message.error('系统繁忙，请稍后再试')
     }

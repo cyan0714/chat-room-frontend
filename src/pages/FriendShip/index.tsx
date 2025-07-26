@@ -69,7 +69,7 @@ export function Friendship() {
         dataIndex: 'headPic',
         render: (_, record) => (
           <div>
-            <img src={record.headPic} />
+            <img src={record.headPic} width={40} height={40} />
           </div>
         ),
       },

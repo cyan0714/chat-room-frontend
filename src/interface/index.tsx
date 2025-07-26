@@ -8,6 +8,7 @@ import type { AddFriend } from '../pages/FriendShip/AddFriendModal'
 const axiosInstance = axios.create({
   // 测试环境
   baseURL: 'http://localhost:3007',
+  // baseURL: 'http://localhost/api',
   // 生产环境(记得给 nginx 配置 /api 的转发，同时 loacalhost 改成你云服务器的公网 ip 地址)
   // baseURL: 'http://localhost/api',
   timeout: 60000,
@@ -86,12 +87,20 @@ export async function updateInfo(data: UserInfo) {
   return await axiosInstance.post('/user/update', data)
 }
 
-export async function updateUserInfoCaptcha() {
-  return await axiosInstance.get('/user/update/captcha')
+export async function updateUserInfoCaptcha(email: string) {
+  return await axiosInstance.get('/user/update/captcha', {
+    params: {
+      address: email,
+    },
+  })
 }
 
 export async function presignedUrl(fileName: string) {
   return axiosInstance.get(`/minio/presignedUrl?name=${fileName}`)
+}
+
+export async function getOssInfo() {
+  return axiosInstance.get(`/oss/ossInfo`)
 }
 
 export async function friendshipList(name?: string) {

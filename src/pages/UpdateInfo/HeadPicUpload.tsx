@@ -2,33 +2,60 @@ import { InboxOutlined } from '@ant-design/icons'
 import { message } from 'antd'
 import Dragger, { type DraggerProps } from 'antd/es/upload/Dragger'
 import axios from 'axios'
-import { presignedUrl } from '../../interface'
+import { getOssInfo, presignedUrl } from '../../interface'
 
 interface HeadPicUploadProps {
   value?: string
   onChange?: (value: string) => void
 }
+interface OssInfo {
+  OSSAccessKeyId: string
+  policy: string
+  Signature: string
+  host: string
+}
 
-let onChange: (value: string) => void
+let onUploadChange: (value: string) => void
+const { data }: { data: OssInfo } = await getOssInfo()
 
 const props: DraggerProps = {
   name: 'file',
-  action: async file => {
-    const res = await presignedUrl(file.name)
-    return res.data
+  // 使用 Minio 搭建的 OSS 服务的上传方式:
+  // action: async file => {
+  //   const res = await presignedUrl(file.name)
+  //   return res.data
+  // },
+  // 使用阿里云 OSS 服务的上传方式:
+  action: async () => {
+    return data.host
   },
+  // 本地调试用:
+  // action: 'http://localhost:3007/user/upload',
   async customRequest(options) {
     const { onSuccess, file, action } = options
-    const res = await axios.put(action, file)
+    const formdata = new FormData()
+
+    formdata.append('key', file.name)
+    formdata.append('OSSAccessKeyId', data.OSSAccessKeyId)
+    formdata.append('policy', data.policy)
+    formdata.append('signature', data.Signature)
+    formdata.append('success_action_status', '200')
+    formdata.append('file', file)
+
+    const res = await axios.post(action, formdata)
 
     onSuccess!(res.data)
   },
 
-  // action: 'http://localhost:3007/user/upload',
   onChange(info) {
+    // info: {
+    //   file: {},
+    //   fileList: []
+    // }
+    console.log('info');
     const { status } = info.file
     if (status === 'done') {
-      onChange('http://localhost:9000/chat-room/' + info.file.name)
+      onUploadChange(data.host + '/' + info.file.name)
       message.success(`${info.file.name} 文件上传成功`)
     } else if (status === 'error') {
       message.error(`${info.file.name} 文件上传失败`)
@@ -46,7 +73,7 @@ const dragger = (
 )
 
 export function HeadPicUpload(props: HeadPicUploadProps) {
-  onChange = props.onChange!
+  onUploadChange = props.onChange!
 
   return props?.value ? (
     <div>
