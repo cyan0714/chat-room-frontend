@@ -2,7 +2,25 @@
 
 基于 React + TypeScript + Vite 的现代化在线聊天室前端。支持用户注册、登录、好友管理、群聊、文件上传等功能。后端项目见：[chat-room-backend](https://github.com/cyan0714/chat-room-backend)
 
----
+
+**注册**
+![registration](./public/registration.png)
+
+**登录**
+![login](./public/login.png)
+
+**添加好友**
+![add-friend](./public/add-friend.png)
+
+**通知**
+![notification](./public/notification.png)
+
+**好友列表**
+![friend-list](./public/friend-list.png)
+
+**聊天**
+![single-chat](./public/single-chat.png)
+![single-chat2](./public/single-chat2.png)
 
 ## ✨ 主要功能
 
@@ -24,8 +42,6 @@
 - 实时消息推送
 - 简洁的 UI
 
----
-
 ## 🚀 技术栈
 - React 18
 - TypeScript
@@ -35,8 +51,6 @@
 - Sass
 - Axios
 - ESLint
-
----
 
 ## 📦 安装与启动
 环境要求：
@@ -48,8 +62,6 @@
 pnpm install
 pnpm dev
 ```
-
----
 
 ## 🏗️ 项目结构
 
