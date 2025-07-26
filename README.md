@@ -6,23 +6,18 @@
 
 注意：目前只能通过QQ邮箱注册~
 
-**注册**
 ![registration](./public/registration.png)
 
-**登录**
 ![login](./public/login.png)
 
-**添加好友**
 ![add-friend](./public/add-friend.png)
 
-**通知**
 ![notification](./public/notification.png)
 
-**好友列表**
 ![friend-list](./public/friend-list.png)
 
-**聊天**
 ![single-chat](./public/single-chat.png)
+
 ![single-chat2](./public/single-chat2.png)
 
 ## ✨ 主要功能
