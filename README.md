@@ -2,6 +2,9 @@
 
 基于 React + TypeScript + Vite 的现代化在线聊天室前端。支持用户注册、登录、好友管理、群聊、文件上传等功能。后端项目见：[chat-room-backend](https://github.com/cyan0714/chat-room-backend)
 
+[在线地址](http://117.72.160.93/login)
+
+注意：目前只能通过QQ邮箱注册~
 
 **注册**
 ![registration](./public/registration.png)

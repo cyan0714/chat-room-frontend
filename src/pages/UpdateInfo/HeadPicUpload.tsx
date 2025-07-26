@@ -35,7 +35,11 @@ const props: DraggerProps = {
     const { onSuccess, file, action } = options
     const formdata = new FormData()
 
-    formdata.append('key', file.name)
+    if (typeof file === 'string') {
+      throw new Error('File must be a File object')
+    }
+
+    formdata.append('key', (file as File).name)
     formdata.append('OSSAccessKeyId', data.OSSAccessKeyId)
     formdata.append('policy', data.policy)
     formdata.append('signature', data.Signature)
@@ -52,7 +56,7 @@ const props: DraggerProps = {
     //   file: {},
     //   fileList: []
     // }
-    console.log('info');
+    console.log('info')
     const { status } = info.file
     if (status === 'done') {
       onUploadChange(data.host + '/' + info.file.name)
